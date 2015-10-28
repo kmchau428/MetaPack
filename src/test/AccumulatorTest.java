@@ -24,9 +24,9 @@ public class AccumulatorTest {
 	
 	@Test
 	public void testAccumulateSimple() {
-		accmulator.accumulate(1,2,3);
+		int sum = accmulator.accumulate(1,2,3);
 		
-	    assertEquals(accmulator.getTotal(), 6);
+	    assertEquals(sum, 6);
 	}
 	
 	@Test
@@ -41,16 +41,16 @@ public class AccumulatorTest {
 	
 	@Test
 	public void testAccumulateWithNegativeNum() {
-		accmulator.accumulate(1,2,3,-10);
+		int sum = accmulator.accumulate(1,2,3,-10);
 		
-	    assertEquals(accmulator.getTotal(), -4);
+	    assertEquals(sum, -4);
 	}
 	
 	@Test
 	public void testAccumulateWithEmptyInput() {
-		accmulator.accumulate();
+		int sum = accmulator.accumulate();
 		
-	    assertEquals(accmulator.getTotal(), 0);
+	    assertEquals(sum, 0);
 	}
 	
 	@Test
@@ -60,9 +60,9 @@ public class AccumulatorTest {
 			array[i] = i+1;
 		}
 		
-		accmulator.accumulate(array);
+		int sum = accmulator.accumulate(array);
 		
-	    assertEquals(accmulator.getTotal(), Arrays.stream(array).sum());
+	    assertEquals(sum, Arrays.stream(array).sum());
 	}
 	
 	@Test
