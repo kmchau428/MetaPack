@@ -31,10 +31,12 @@ public class AccumulatorTest {
 	
 	@Test
 	public void testAccumulateComplex() {
-		accmulator.accumulate(1,2,3);
-		accmulator.accumulate(4);
+		int firstSum = accmulator.accumulate(1,2,3);
+		int secondSum = accmulator.accumulate(4);
 		
-	    assertEquals(accmulator.getTotal(), 10);
+	    assertEquals(firstSum, 6);
+	    assertEquals(secondSum, 4);
+	    assertEquals(accmulator.getTotal(), firstSum+secondSum);
 	}
 	
 	@Test
@@ -42,6 +44,13 @@ public class AccumulatorTest {
 		accmulator.accumulate(1,2,3,-10);
 		
 	    assertEquals(accmulator.getTotal(), -4);
+	}
+	
+	@Test
+	public void testAccumulateWithEmptyInput() {
+		accmulator.accumulate();
+		
+	    assertEquals(accmulator.getTotal(), 0);
 	}
 	
 	@Test
