@@ -1,32 +1,34 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Arrays;
 
 import org.junit.*;
+import org.junit.rules.ExpectedException;
 
+import model.Accumulator;
 import model.AccumulatorImpl;
 
 
 public class AccumulatorTest {
-	static AccumulatorImpl accmulator;
+	@Rule
+    public ExpectedException thrown= ExpectedException.none();
 	
-	@BeforeClass
-	public static void init() {
-		accmulator = AccumulatorImpl.getInstance();
-	}
+	Accumulator accmulator;
 	
 	@Before
-	public void resetTotal() {
-		accmulator.reset();
+	public void init() {
+		accmulator = new AccumulatorImpl();
 	}
 	
 	@Test
 	public void testAccumulateSimple() {
-		int sum = accmulator.accumulate(1,2,3);
+		int array[] = new int[] {1,2,3};
+		int sum = accmulator.accumulate(array);
 		
-	    assertEquals(sum, 6);
+	    assertEquals(Arrays.stream(array).sum(), sum);
 	}
 	
 	@Test
@@ -36,21 +38,22 @@ public class AccumulatorTest {
 		
 	    assertEquals(firstSum, 6);
 	    assertEquals(secondSum, 4);
-	    assertEquals(accmulator.getTotal(), firstSum+secondSum);
+	    assertEquals(firstSum+secondSum, accmulator.getTotal());
 	}
 	
 	@Test
 	public void testAccumulateWithNegativeNum() {
-		int sum = accmulator.accumulate(1,2,3,-10);
+		int array[] = new int[] {1,2,3,-10};
+		int sum = accmulator.accumulate(array);
 		
-	    assertEquals(sum, -4);
+	    assertEquals(Arrays.stream(array).sum(), sum);
 	}
 	
 	@Test
 	public void testAccumulateWithEmptyInput() {
-		int sum = accmulator.accumulate();
-		
-	    assertEquals(sum, 0);
+		 thrown.expect(IllegalArgumentException.class);
+		 thrown.expectMessage("There should be at least one item!");
+		 accmulator.accumulate();
 	}
 	
 	@Test
@@ -62,20 +65,26 @@ public class AccumulatorTest {
 		
 		int sum = accmulator.accumulate(array);
 		
-	    assertEquals(sum, Arrays.stream(array).sum());
+	    assertEquals(Arrays.stream(array).sum(), sum);
 	}
 	
 	@Test
-	public void testReset() {
-		accmulator.accumulate(1,2,3);
+	public void testResetTotal() {
+		int firstSum = accmulator.accumulate(1,2,3);
 		accmulator.reset();
 		
-	    assertEquals(accmulator.getTotal(), 0);
+		assertFalse(accmulator.getTotal() == firstSum);
+	    assertEquals(0, accmulator.getTotal());
 	}
 	
 	@Test
 	public void testGetTotal(){
-	    assertEquals(accmulator.getTotal()+1, 1);
+	    assertEquals(1, accmulator.getTotal()+1);
+	}
+	
+	@Test
+	public void testInitValue(){
+	    assertEquals(0, accmulator.getTotal());
 	}
 	
 	

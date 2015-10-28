@@ -3,8 +3,10 @@ import java.util.Arrays;
 
 
 public final class AccumulatorImpl implements Accumulator{
-	private static int total;
+	private int total;
 	
+	//for Singleton
+	/*
 	private static AccumulatorImpl instance = new AccumulatorImpl();
 	
 	private AccumulatorImpl() {};
@@ -12,13 +14,17 @@ public final class AccumulatorImpl implements Accumulator{
 	public static AccumulatorImpl getInstance() {
 		return instance;
 	}
+	*/
 
 	@Override
 	public int accumulate(int... values) {
+		if (values.length < 1)
+			throw new IllegalArgumentException("There should be at least one item!");
+		
 		int sum = Arrays.stream(values).sum();
 		total += sum;
 		
-		return sum;
+		return sum;			
 	}
 
 	@Override
